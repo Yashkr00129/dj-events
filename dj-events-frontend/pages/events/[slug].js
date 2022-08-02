@@ -6,7 +6,9 @@ import { FaPencilAlt, FaTimes } from "react-icons/fa";
 import Image from "next/image";
 
 export default function EventPage({ evt }) {
-  const deleteEvent = () => {};
+  const deleteEvent = () => { };
+  let event = evt.attributes
+  console.log(event)
   return (
     <Layout>
       <div className={styles.event}>
@@ -21,20 +23,20 @@ export default function EventPage({ evt }) {
           </a>
         </div>
         <span>
-          {evt.date} at {evt.time}
+          {new Date(event.date).toLocaleDateString("en-US")} at {event.time}
         </span>
-        <h1>{evt.name}</h1>
-        {evt.image && (
+        <h1>{event.name}</h1>
+        {event.image && (
           <div>
-            <Image src={evt.image} alt={evt.name} width={960} height={600} />
+            <Image src={event.image.data.attributes.formats.large.url} alt={event.name} width={960} height={600} />
           </div>
         )}
         <h3>Performers:</h3>
-        <p>{evt.performers}</p>
+        <p>{event.performers}</p>
         <h3>Description</h3>
-        <p>{evt.description}</p>
-        <h3>Venue: {evt.venue}</h3>
-        <p>{evt.address}</p>
+        <p>{event.description}</p>
+        <h3>Venue: {event.venue}</h3>
+        <p>{event.address}</p>
         <Link href={"/events"}>
           <a className={styles.back}>
             {"<"} Back to events
@@ -46,10 +48,13 @@ export default function EventPage({ evt }) {
 }
 
 export async function getServerSideProps({ query: { slug } }) {
-  const res = await fetch(`${API_URL}/api/events/${slug}`);
-  const events = await res.json();
+  const res = await fetch(`${API_URL}/api/events/?slug=${slug}&populate=*`);
+  let events = await res.json();
+  events = events.data;
 
   return {
-    props: { evt: events[0] },
+    props: {
+      evt: events[0],
+    },
   };
 }
