@@ -48,7 +48,7 @@ export default function EventPage({ evt }) {
 }
 
 export async function getServerSideProps({ query: { slug } }) {
-  const res = await fetch(`${API_URL}/api/events/?slug=${slug}&populate=*`);
+  const res = await fetch(`${API_URL}/api/events/?filters[slug][$eq]=${slug}&populate=*`);
   let events = await res.json();
   events = events.data;
 
