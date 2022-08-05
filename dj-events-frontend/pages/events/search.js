@@ -22,8 +22,7 @@ export default function SearchPage({ events }) {
 
 export async function getServerSideProps({ query: { term } }) {
 
-  // Create a query that will search for the term in the title, venue, performers and description fields from the strapi v4 api and prettify the url
-  const query = qs.stringify({
+   const query = qs.stringify({
     filters: {
       $or: [
         { name: { $containsi: term } },
