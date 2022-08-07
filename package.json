@@ -1,0 +1,25 @@
+{
+  "name": "dj-events",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "npm run develop --prefix dj-events-backend",
+    "client":"npm run dev --prefix dj-events-frontend",
+    "dev":"concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yashkr00129/dj-events.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Yashkr00129/dj-events/issues"
+  },
+  "homepage": "https://github.com/Yashkr00129/dj-events#readme",
+  "devDependencies": {
+    "concurrently": "^7.3.0"
+  }
+}
