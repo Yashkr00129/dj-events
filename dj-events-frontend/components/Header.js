@@ -38,8 +38,8 @@ export default function Header() {
                 </Link>
               </li>
               <li>
-                <button className="btn-secondary btn-icon">
-                  <FaSignOutAlt onClick={logout} /> LogOut
+                <button className="btn-secondary btn-icon" onClick={logout}>
+                  <FaSignOutAlt /> LogOut
                 </button>
               </li>
             </>

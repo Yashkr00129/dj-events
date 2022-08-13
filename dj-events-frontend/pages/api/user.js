@@ -6,8 +6,10 @@ const handler = async (req, res) => {
     res.setHeader("Allow", ["GET"]);
     res.status(405).json({ msg: `Method ${req.method} not allowed ` });
   }
-  if (!req.headers.cookie)
-    return res.status(403).json({ msg: "Not Authorized" });
+  if (!req.headers.cookie) {
+    res.status(403).json({ msg: "Not Authorized" });
+    return
+  }
 
   const { token } = cookie.parse(req.headers.cookie);
   const strapiRes = await fetch(`${API_URL}/api/users/me`, {
@@ -19,9 +21,11 @@ const handler = async (req, res) => {
   const user = await strapiRes.json();
 
 
-  if (!strapiRes.ok) return res.status(403).json({ msg: "User Forbidden" });
-  res.status(200).json({ user })
-
+  if (!strapiRes.ok) {
+    res.status(403).json({ msg: "User Forbidden" });
+    return
+  }
+  res.status(200).json({ user });
 }
 
 

@@ -1,7 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { NEXT_URL } from "@config/index";
-import { serialize } from "cookie";
 
 const AuthContext = createContext();
 
@@ -15,7 +14,6 @@ export const AuthProvider = ({ children }) => {
 
   // Register user
   const register = async (user) => {
-    console.log(user)
     try {
     } catch (error) {
     }
@@ -46,20 +44,27 @@ export const AuthProvider = ({ children }) => {
 
   // Logout user
   const logout = async () => {
-    console.log("Logout")
+    const res = await fetch(`${NEXT_URL}/api/logout`, {
+      method: "POST"
+    })
+    if (res.ok) {
+      setUser(null)
+      router.push('/')
+    }
   }
 
   // Check if user is logged in
-  const checkUserLoggedIn = async (user) => {
+  const checkUserLoggedIn = async () => {
     const res = await fetch(`${NEXT_URL}/api/user`)
     const data = await res.json()
     if (res.ok) {
       setUser(data.user)
     }
-    else { setUser(null) }
+    else setUser(null)
   }
 
-  return <AuthContext.Provider value={{ register, login, checkUserLoggedIn, logout, user, error }}>{children}</AuthContext.Provider>
+  const value = { register, login, checkUserLoggedIn, logout, user, error };
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
-export default AuthContext
+export default AuthContext; 

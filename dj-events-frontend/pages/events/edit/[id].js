@@ -15,7 +15,6 @@ import ImageUpload from "@/components/ImageUpload";
 export default function EditEventPage({ evt }) {
 
   let event = evt.attributes
-  console.log(event)
   const [values, setValues] = useState({
     name: event.name,
     description: event.description,
@@ -30,7 +29,6 @@ export default function EditEventPage({ evt }) {
 
   const [showModal, setShowModal] = useState(false)
 
-  console.log(imagePreview)
 
   const router = useRouter()
 
@@ -65,11 +63,9 @@ export default function EditEventPage({ evt }) {
   }
 
   const imageUploaded = async () => {
-    console.log("uploaded")
     const res = await fetch(`${API_URL}/api/events/${evt.id}`)
     let newEvt = await res.json()
     newEvt = newEvt.data
-    console.log(newEvt)
     // setImagePreview(data.attributes.image.data.attributes.formats.thumbnail.url)
     setShowModal(false)
   }
@@ -166,7 +162,6 @@ export default function EditEventPage({ evt }) {
       <div>
         <button className="btn-secondary" onClick={() => {
           setShowModal(true)
-          console.log(showModal)
         }}>
           <FaImage /> Set Image
         </button>
@@ -182,7 +177,6 @@ export async function getServerSideProps({ params: { id }, req }) {
   const res = await fetch(`${API_URL}/api/events/${id}?populate=*`);
   let evt = await res.json()
   evt = evt.data
-  console.log(req.headers.cookie)
   return {
     props: {
       evt

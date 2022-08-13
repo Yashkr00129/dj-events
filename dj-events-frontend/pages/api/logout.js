@@ -1,16 +1,22 @@
-import { NEXT_URL } from "@config/index";
+import cookie from "cookie"
 
 const handler = (req, res) => {
-  // If the user is logged in, log them out by setting the cookie to null.
+  if (req.method !== "POST") {
+    res.setHeader("Allow", ["POST"]);
+    res.status(405).json({ msg: `Method ${req.method} not allowed ` });
+  }
+  // Destroy cookie
   res.setHeader("Set-Cookie", cookie.serialize("token", "", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
-    maxAge: 60 * 60 * 24 * 7,
-  }));
-  res.statusCode = 200;
-  res.redirect(NEXT_URL);  
+    expires: new Date(0),
+    path: "/"
+  })
+  );
 
- }
+  res.status(200).json({ message: "Success" })
+}
+
 
 export default handler;
