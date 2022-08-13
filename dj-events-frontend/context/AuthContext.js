@@ -14,9 +14,25 @@ export const AuthProvider = ({ children }) => {
 
   // Register user
   const register = async (user) => {
-    try {
-    } catch (error) {
+    const res = await fetch(`${NEXT_URL}/api/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    })
+    const data = await res.json();
+
+    if (!res.ok) {
+      setError(data.message);
+      setUser(null)
+      return;
     }
+
+
+    setUser(data.user);
+    setError(null);
+    router.push('/account/dashboard')
   }
 
   // Login user
@@ -31,7 +47,7 @@ export const AuthProvider = ({ children }) => {
     const data = await res.json();
 
     if (!res.ok) {
-      setError(data.error);
+      setError(data.message);
       setUser(null)
       return;
     }
@@ -54,7 +70,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   // Check if user is logged in
-  const checkUserLoggedIn = async () => {
+  const checkUserLoggedIn = async (user) => {
     const res = await fetch(`${NEXT_URL}/api/user`)
     const data = await res.json()
     if (res.ok) {
@@ -68,3 +84,7 @@ export const AuthProvider = ({ children }) => {
 }
 
 export default AuthContext; 
+
+// SD
+// DAV
+// CGC Landran

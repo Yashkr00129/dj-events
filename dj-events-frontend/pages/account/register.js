@@ -1,7 +1,7 @@
 import { FaUser } from "react-icons/fa"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import Link from "next/link";
 import Layout from "@/components/Layout";
 import styles from "@/styles/AuthForm.module.css";
@@ -16,6 +16,14 @@ export default function RegisterPage() {
 
   const { register, error } = useContext(AuthContext);
 
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }
+    , [error])
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // Validate form
@@ -23,7 +31,8 @@ export default function RegisterPage() {
       toast.error("Passwords do not match");
       return;
     }
-    register({ username, email, password });
+    const user = { username, email, password }
+    register(user);
   }
 
   return (
